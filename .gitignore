@@ -1,5 +1,5 @@
 .DS_Store
-node_modules/
+# node_modules/
 unpackage/
 dist/
 ./*.env
@@ -24,5 +24,3 @@ yarn.lock
 *.sw*
 
 # 自动生成
-src/static/style/theme.scss
-pages.json
