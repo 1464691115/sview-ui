@@ -2,7 +2,7 @@
   "name": "sview-ui",
   "version": "1.0.0",
   "description": "",
-  "main": "no",
+  "main": "index.ts",
   "directories": {
     "lib": "lib"
   },
