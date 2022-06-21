@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { computed, CSSProperties, reactive, ref, watch } from "vue";
 import SIcon from "../icon/sIcon.vue";
-import { showToast } from "../utils";
+import { showToast } from "sview-ui";
 
 interface Props {
 	customerStyle?: CSSProperties

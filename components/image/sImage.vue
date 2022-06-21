@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ImageMode } from "../index";
+import type { ImageMode } from "sview-ui";
 import { CSSProperties } from "vue";
 
 interface Props {

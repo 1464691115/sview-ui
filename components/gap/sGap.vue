@@ -3,7 +3,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties } from "vue";
-import { Px } from "../utils";
+import { Px } from "sview-ui";
 
 interface Props {
   /** 背景颜色 */

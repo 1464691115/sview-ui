@@ -20,8 +20,13 @@
         "experimentalDecorators": true,
         "lib": ["esnext", "dom"],
         "baseUrl": "./",
-        "paths": {},
+        "paths": {
+            "sview-ui": ["./index.ts"],
+            "sview-ui/*": ["./components/*"],
+        },
         "types": [
+            "mini-types",
+            "miniprogram-api-typings",
             "@dcloudio/types",
         ],
     },

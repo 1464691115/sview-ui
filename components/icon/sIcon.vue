@@ -3,7 +3,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties, reactive } from "vue";
-import { Px } from "../utils";
+import { Px } from "sview-ui";
 interface Props {
 	icon: keyof typeof icon_list
 	size?: string | number;

@@ -17,7 +17,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { showToast } from "../utils";
+import { showToast } from "sview-ui";
 import SIcon from "../icon/sIcon.vue";
 interface Props {
 	/** 当前页数 */

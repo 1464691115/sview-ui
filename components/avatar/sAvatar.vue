@@ -4,8 +4,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { ImageMode, shape } from "../index";
-import { isCircle, Px } from "../utils";
+import { isCircle, Px, ImageMode, shape } from "sview-ui";
 import { computed, CSSProperties } from "vue";
 
 interface Props {
