@@ -22,7 +22,7 @@
         "baseUrl": "./",
         "paths": {
             "sview-ui": ["./index.ts"],
-            "sview-ui/*": ["./components/*"],
+            "sview-ui/*": ["./*"],
         },
         "types": [
             "mini-types",
@@ -35,5 +35,6 @@
         "**/*.ts",
         "**/*.vue",
         "**/*.d.ts",
+        "@dcloudio/types",
     ]
 }
