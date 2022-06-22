@@ -5,8 +5,9 @@
 	</view>
 </template>
 <script lang="ts" setup>
-import { computed, CSSProperties } from "vue";
+import { computed, CSSProperties, reactive } from "vue";
 import { Px } from "sview-ui";
+import baseImg from "./lib/baseImg";
 interface Props {
 	/** 图片路径，建议绝对路径 优先级高于 mode */
 	icon?: string
@@ -21,11 +22,8 @@ interface Props {
 	imageStyle?: CSSProperties
 }
 
-enum modeList {
-	list = './lib/static/list-none.png',
-	page = './lib/static/page-error.png',
-}
 const props = defineProps<Props>();
+const modeList = reactive(baseImg)
 const emptyStyle = computed<CSSProperties>(() => ({
 	...(props.customerStyle || {}),
 	marginTop: Px(props.marginTop || 0)

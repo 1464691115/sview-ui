@@ -40,14 +40,14 @@ function createComponent(name) {
     mkdirsSync(path.resolve(`${_path}/${name}`))
     spinner.succeed(`组件目录生成完毕！`)
 
-    // const upName = name.replace(/\w?/, (str) => str.toUpperCase())
+    const upName = name.replace(/\w?/, (str) => str.toUpperCase())
 
     const vueTemplate = `<template>\n\t<view class="s-${name}" :style="${name}Style">\n\n\t</view>\n</template>\n<script lang="ts" setup>\nimport { computed, CSSProperties } from "vue";\ninterface Props {\n}\nconst props = defineProps<Props>();\nconst ${name}Style = computed<CSSProperties>(() => ({\n}));\n</script>\n<style lang="scss" scoped>\n.s-${name} {\n\twidth: 100%;\n}\n</style>`
     const vuePath = `${_path}/${name}/s-${name}.vue`
     fs.writeFileSync(path.resolve(vuePath), vueTemplate, 'utf8')
 
     const indexPath = fs.readFileSync(path.resolve(__dirname, './components-template.js'), { encoding: 'utf-8' })
-    fs.writeFileSync(path.resolve(`${_path}/${name}/index.ts`), indexPath.replace(/\$/g, name), 'utf8')
+    fs.writeFileSync(path.resolve(`${_path}/${name}/index.ts`), indexPath.replace(/\$1/g, name).replace(/\$2/g, upName), 'utf8')
 
     const comIndexPath = fs.readFileSync(path.resolve(__dirname, '../components/index.ts'), { encoding: 'utf-8' })
     fs.writeFileSync(path.resolve(`${_path}/index.ts`), comIndexPath + `\nexport * from './${name}'`, 'utf8')
