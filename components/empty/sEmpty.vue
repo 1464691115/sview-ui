@@ -22,8 +22,8 @@ interface Props {
 }
 
 enum modeList {
-	list = '/static/images/list-none.png',
-	page = '/static/images/page-error.png',
+	list = '/lib/static/images/list-none.png',
+	page = '/lib/static/images/page-error.png',
 }
 const props = defineProps<Props>();
 const emptyStyle = computed<CSSProperties>(() => ({

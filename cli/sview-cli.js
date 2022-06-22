@@ -1,9 +1,6 @@
-
 const args = process.argv.slice(2)
 const fs = require('fs')
 const path = require('path')
-
-
 
 /** @type {import('ora').Ora} */
 let spinner = null
@@ -22,6 +19,7 @@ import('ora').then((oraD) => {
             }, 500)
             break;
         default:
+            spinner.fail(`请输入要执行的命令`)
             break;
     }
 
@@ -29,7 +27,7 @@ import('ora').then((oraD) => {
 
 /** 创建 ui组件 */
 function createComponent(name) {
-    const _path = '.'
+    const _path = './components'
 
     const exitsCom = fs.existsSync(`${_path}/${name}`)
     if (exitsCom) {
@@ -47,6 +45,12 @@ function createComponent(name) {
     const vuePath = `${_path}/${name}/s${upName}.vue`
     fs.writeFileSync(path.resolve(vuePath), vueTemplate, 'utf8')
 
+    const indexPath = fs.readFileSync(path.resolve(__dirname, './components-template.js'), { encoding: 'utf-8' })
+    fs.writeFileSync(path.resolve(`${_path}/${name}/index.ts`), indexPath.replace(/\$/g, upName), 'utf8')
+
+    const comIndexPath = fs.readFileSync(path.resolve(__dirname, '../components/index.ts'), { encoding: 'utf-8' })
+    fs.writeFileSync(path.resolve(`${_path}/index.ts`), comIndexPath + `\nexport * from './${name}'`, 'utf8')
+
     setTimeout(() => spinner.succeed(`${vuePath} 创建成功！`), 400)
 }
 
@@ -61,3 +65,5 @@ function mkdirsSync(dirname) {
         }
     }
 }
+
+
