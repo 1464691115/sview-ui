@@ -1,9 +1,9 @@
 import { withInstall } from '../typings'
-import Avatar from './sAvatar.vue'
+import Avatar from './s-avatar.vue'
 
 export const SAvatar = withInstall(Avatar)
 export default SAvatar
 
-export * from './sAvatar.vue'
+export * from './s-avatar.vue'
 
 

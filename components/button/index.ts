@@ -1,9 +1,9 @@
 import { withInstall } from '../typings'
-import Button from './sButton.vue'
+import Button from './s-button.vue'
 
 export const SButton = withInstall(Button)
 export default SButton
 
-export * from './sButton.vue'
+export * from './s-button.vue'
 
 

@@ -1,9 +1,9 @@
 import { withInstall } from '../typings'
-import Pagination from './sPagination.vue'
+import Pagination from './s-pagination.vue'
 
 export const SPagination = withInstall(Pagination)
 export default SPagination
 
-export * from './sPagination.vue'
+export * from './s-pagination.vue'
 
 

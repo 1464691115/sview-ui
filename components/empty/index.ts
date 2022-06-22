@@ -1,9 +1,9 @@
 import { withInstall } from '../typings'
-import Empty from './sEmpty.vue'
+import Empty from './s-empty.vue'
 
 export const SEmpty = withInstall(Empty)
 export default SEmpty
 
-export * from './sEmpty.vue'
+export * from './s-empty.vue'
 
 

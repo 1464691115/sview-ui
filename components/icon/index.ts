@@ -1,9 +1,9 @@
 import { withInstall } from '../typings'
-import Icon from './sIcon.vue'
+import Icon from './s-icon.vue'
 
 export const SIcon = withInstall(Icon)
 export default SIcon
 
-export * from './sIcon.vue'
+export * from './s-icon.vue'
 
 
