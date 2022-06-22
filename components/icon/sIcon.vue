@@ -121,16 +121,17 @@ const iconStyle = computed<CSSProperties>(() => ({
 }));
 </script>
 <style lang="scss" scoped>
+@font-face {
+	font-family: 'iconfont';
+	/* Project id 3433285 */
+	src: url('./lib/font/iconfont.woff2') format('woff2'),
+		url('./lib/font/iconfont.woff') format('woff'),
+		url('./lib/font/iconfont.ttf') format('truetype');
+}
+
 .s-icon {
 	position: relative;
 	font-family: "iconfont";
 	transition: all 0.3s;
-}
-
-@font-face {
-  font-family: 'iconfont';  /* Project id 3433285 */
-  src: url('../lib/font/iconfont.woff2') format('woff2'),
-       url('../lib/font/iconfont.woff') format('woff'),
-       url('../lib/font/iconfont.ttf') format('truetype');
 }
 </style>
