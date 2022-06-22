@@ -42,8 +42,6 @@ const backStyle = computed<CSSProperties>(() => ({
 }))
 </script>
 <style lang="scss" scoped>
-@import '../lib/style/index.scss';
-
 .s-tag {
   min-width: 100rpx;
   display: flex;
