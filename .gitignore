@@ -24,3 +24,5 @@ yarn.lock
 *.sw*
 
 # 自动生成
+
+cli/
