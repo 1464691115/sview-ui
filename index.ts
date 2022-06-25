@@ -1,3 +1,19 @@
-const resFn = () => new Promise((resolve) => { setTimeout(() => resolve(1), 1000) })
+export type ImageMode =
+    | "scaleToFill"
+    | "aspectFit"
+    | "aspectFill"
+    | "widthFix"
+    | "heightFix"
+    | "top"
+    | "bottom"
+    | "center"
+    | "left"
+    | "right"
+    | "top left"
+    | "top right"
+    | "bottom left"
+    | "bottom right"
 
-Promise.all([resFn(), resFn(), resFn()]).then(res => console.log(res))
+export type shape = "circle" | "square";
+
+export * from './utils' 
