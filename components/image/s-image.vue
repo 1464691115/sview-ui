@@ -1,14 +1,14 @@
 <template>
-  <view class="global-image" :style="props.customStyle || {}">
-    <image :src="props.src" :mode="props.mode" :lazyLoad="props.fadeShow" :fadeShow="props.fadeShow" :webp="props.webp"
+  <view class="s-image" :style="props.customStyle || {}">
+    <image :src="url" :mode="props.mode" :lazyLoad="props.fadeShow" :fadeShow="props.fadeShow" :webp="props.webp"
       :showMenuByLongPress="props.showMenuByLongPress" :draggable="props.draggable" style="width: 100%; height: 100%"
-      @load="(e: any) => emits('load', e)" @error="(e: any) => emits('error', e)" @click="handleTapImg"/>
+      @load="(e: any) => emits('load', e)" @error="(e: any) => emits('error', e)" @click="handleTapImg" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import type { ImageMode } from "sview-ui";
-import { CSSProperties } from "vue";
+import { computed, CSSProperties } from "vue";
 
 interface Props {
   /** 		图片资源地址	 */
@@ -38,6 +38,8 @@ const emits = defineEmits<{
   (e: "error", img: tinyapp.IBaseEvent): void;
 }>();
 
+const url = computed(() => props.src.indexOf('@/') == 0 ? props.src.split('@')[1] : props.src)
+
 function handleTapImg() {
   if (props.isPreview === true) {
     uni.previewImage({
@@ -49,7 +51,7 @@ function handleTapImg() {
 </script>
 
 <style scoped>
-.global-image {
+.s-image {
   width: 100%;
   height: 100%;
 }
