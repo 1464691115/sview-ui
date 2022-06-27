@@ -21,20 +21,16 @@
         "lib": ["esnext", "dom"],
         "baseUrl": "./",
         "paths": {
+            "@/*": ["./*"],
             "sview-ui": ["./index.ts"],
             "sview-ui/*": ["./*"],
         },
-        "types": [
-            "mini-types",
-            "miniprogram-api-typings",
-            "@dcloudio/types",
-        ],
+        "types": [],
     },
     "exclude": ["node_modules", "build", "dist", "scripts", "jest"],
     "include": [
         "**/*.ts",
         "**/*.vue",
         "**/*.d.ts",
-        "@dcloudio/types",
     ]
 }

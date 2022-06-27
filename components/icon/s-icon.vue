@@ -8,6 +8,7 @@ interface Props {
 	icon: keyof typeof icon_list
 	size?: string | number;
 	color?: string;
+	customStyle?: CSSProperties
 }
 
 const icon_list = reactive({
@@ -74,7 +75,7 @@ const icon_list = reactive({
 	date: '&#xe697;',
 	search: '&#xe699;',
 	scan: '&#xe69a;',
-	check: '&#xe69b;',
+	check: '&#xe736;',
 	like: '&#xe69c;',
 	like_fill: '&#xe69d;',
 	LOCK: '&#xe69e;',
@@ -119,6 +120,7 @@ const iconStyle = computed<CSSProperties>(() => ({
 	height: Px(props.size || 48),
 	color: props.color || '#333',
 }));
+
 </script>
 <style lang="scss" scoped>
 @font-face {
