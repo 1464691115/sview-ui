@@ -6,15 +6,19 @@
       :key="item.name"
       :name="item.name"
       :label="item.label"
+      :shape="props.shape"
     />
   </view>
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties, ref, watch } from "vue";
 import SCheckbox from "./s-checkbox.vue";
+import type { shape } from "sview-ui";
+
 interface Props {
   placement?: CSSProperties["flexDirection"];
   checkOptions: { name: string; label: string; value?: boolean; disable?: boolean }[];
+  shape?: shape;
 }
 
 const props = defineProps<Props>();

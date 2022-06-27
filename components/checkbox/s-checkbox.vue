@@ -54,17 +54,24 @@ function handleTapCheck() {
   align-items: center;
 
   font-size: 14px;
-  line-height: 20px;
+  line-height: 14px;
 
   .s-checkbox_con {
     margin-right: 10px;
     width: 18px;
     height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(200, 201, 204);
 
     transition: all 200ms;
+
+    .s-icon {
+      margin-right: 2px;
+    }
   }
 }
 

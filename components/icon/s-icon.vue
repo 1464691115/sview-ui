@@ -75,7 +75,7 @@ const icon_list = reactive({
 	date: '&#xe697;',
 	search: '&#xe699;',
 	scan: '&#xe69a;',
-	check: '&#xe736;',
+	check: '&#xe68f;',
 	like: '&#xe69c;',
 	like_fill: '&#xe69d;',
 	LOCK: '&#xe69e;',
