@@ -4,10 +4,7 @@
 </script>
 
 <template>
-  <s-checkbox-group
-    placement="column"
-    :check-options="[{ name: 'pei', label: '西瓜', value: true },{ name: 'dou', label: '放牛的', value: true },]"
-  />
+  <s-overlay :show="false"/>
   <!-- <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" /> -->
 </template>
