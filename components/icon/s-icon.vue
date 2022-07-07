@@ -135,5 +135,6 @@ const iconStyle = computed<CSSProperties>(() => ({
 	position: relative;
 	font-family: "iconfont";
 	transition: all 0.3s;
+	font-style: initial;
 }
 </style>
