@@ -37,7 +37,8 @@ const tagStyle = computed<CSSProperties>(() => ({
 
 const backStyle = computed<CSSProperties>(() => ({
   ...(props.color ? {
-    background: props.color.includes(',') ? `rgba(${props.color}, 0.15)` : props.color,
+    background:  props.color,
+    opacity: 0.15
   } : {}),
 }))
 </script>
