@@ -7,8 +7,6 @@
         "lib": "lib"
     },
     "scripts": {
-        "sview": "node ./cli/sview-cli.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
@@ -20,14 +18,26 @@
         "url": "https://github.com/1464691115/sview-ui/issues"
     },
     "homepage": "https://github.com/1464691115/sview-ui#readme",
+    "dependencies": {
+        "node-sass": "^7.0.1",
+        "sass": "^1.51.0",
+        "sass-loader": "^13.0.1",
+        "vite-plugin-style-import": "1.4.1",
+        "vite-plugin-vue-setup-extend": "^0.4.0",
+        "vue": "^3.2.25"
+    },
     "devDependencies": {
         "@dcloudio/types": "^2.6.4",
+        "@types/node": "^18.0.0",
         "@types/vue": "^2.0.0",
-        "ora": "^6.1.0",
-        "vite-plugin-vue-setup-extend": "^0.4.0",
+        "@vitejs/plugin-vue": "^2.3.3",
         "mini-types": "*",
         "miniprogram-api-typings": "*",
+        "ora": "^6.1.0",
+        "sass": "^1.51.0",
+        "typescript": "^4.5.4",
+        "vite": "^2.9.9",
         "vue": "^3.2.37",
-        "sass": "^1.51.0"
+        "vue-tsc": "^0.34.7"
     }
 }
