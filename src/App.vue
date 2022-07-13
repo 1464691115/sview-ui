@@ -1,17 +1,28 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
+<template>
+  <!-- <s-overlay v-model="show" /> -->
+  <s-input
+    v-model="val"
+    placeholder="请输入"
+    text-append=".com"
+    text-prepend="https://"
+    @change="handleChange"
+  >
+    <!-- <template v-slot:></template> -->
+  </s-input>
+  <!-- <img alt="Vue logo" src="./assets/logo.png" />
+  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" /> -->
+</template>
 
+<script setup lang="ts">
 import { ref } from "vue";
 
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 const show = ref(true);
+const val = ref("");
+function handleChange(e) {
+  console.log(val.value);
+}
 </script>
-
-<template>
-  <s-overlay v-model="show" />
-  <!-- <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" /> -->
-</template>
 
 <style lang="scss">
 #app {
