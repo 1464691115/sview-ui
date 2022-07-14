@@ -35,7 +35,12 @@
 
     <view v-if="inputSuffixClass" class="suffix_group">
       <slot name="suffix">
-        <s-icon :icon="props.iconSuffix || 'close'" size="26px" color="#999" />
+        <s-icon
+          :icon="props.iconSuffix || 'close'"
+          size="26px"
+          color="#999"
+          @click="handleSuffixIconClick"
+        />
       </slot>
     </view>
 
@@ -80,6 +85,7 @@ interface Props {
 const props = defineProps<Props>();
 const emits = defineEmits<{
   (e: "change", val: Event);
+  (e: "suffixClick", val: Event);
   (e: "update:modelValue", val: string);
 }>();
 const slots = useSlots();
@@ -92,7 +98,9 @@ const inputDisabledClass = computed(() => props.disabled === true);
 /** 是否使用右侧图标类（suffix */
 const inputSuffixClass = computed(
   () =>
-    props.iconSuffix || (props.clearable && props.modelValue!?.length > 0) || slots.suffix
+    !!props.iconSuffix ||
+    (props.clearable && props.modelValue!?.length > 0) ||
+    !!slots.suffix
 );
 /** input左上下边框圆角是否为0 */
 const borderPrependClass = computed(() => slots.prepend || props.textPrepend);
@@ -103,6 +111,12 @@ function hanldeInput(e) {
   const event = (e as any)?.target.value;
   emits("change", e);
   emits("update:modelValue", event);
+}
+
+function handleSuffixIconClick(e) {
+  /** 如果有后置图标 */
+  if (props.iconSuffix) emits("suffixClick", e);
+  else if (props.clearable) emits("update:modelValue", "");
 }
 </script>
 <style lang="scss" scoped>
