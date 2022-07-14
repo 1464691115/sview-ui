@@ -122,6 +122,7 @@ function hanldeInput(e) {
     border: 1px solid #dcdfe6;
     border-radius: 4px;
     background-color: #fff;
+    color: #333;
     transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     box-sizing: border-box;
     outline: none;
