@@ -1,7 +1,11 @@
 <template>
   <view
     class="s-input"
-    :class="{ 'is-disabled': inputDisabledClass, 's-input-suffix': inputSuffixClass }"
+    :class="{
+      'is-disabled': inputDisabledClass,
+      's-input-suffix': inputSuffixClass,
+      's-input-prefix': inputPrefixClass,
+    }"
   >
     <view
       v-if="props.textPrepend || slots.prepend"
@@ -12,36 +16,51 @@
       </slot>
     </view>
 
-    <input
-      class="s-input_inner"
-      :value="props.modelValue"
+    <view
+      class="s-input_group-content"
       :class="{
         's-input_inner-focus': isFocus,
         's-input_border-prepend': borderPrependClass,
         's-input_border-append': borderAppendClass,
       }"
-      :placeholder="props.placeholder || ''"
-      :disabled="inputDisabledClass"
-      :maxlength="props.maxlength || -1"
-      :minlength="props.minlength || 0"
-      :autocomplete="props.autocomplete || 'on'"
-      :name="props.name || ''"
-      :readonly="props.readonly || false"
-      :autofocus="props.autofocus || false"
-      @focus="isFocus = true"
-      @blur="isFocus = false"
-      @input="hanldeInput"
-    />
+    >
+      <view v-if="slots.prefix || props.iconPrefix" class="prefix_group">
+        <slot name="prefix">
+          <s-icon
+            :icon="props.iconPrefix || 'search'"
+            size="26px"
+            color="#999"
+            @click="handlePrefixIconClick"
+          />
+        </slot>
+      </view>
 
-    <view v-if="inputSuffixClass" class="suffix_group">
-      <slot name="suffix">
-        <s-icon
-          :icon="props.iconSuffix || 'close'"
-          size="26px"
-          color="#999"
-          @click="handleSuffixIconClick"
-        />
-      </slot>
+      <input
+        class="s-input_inner"
+        :value="props.modelValue"
+        :placeholder="props.placeholder || ''"
+        :disabled="inputDisabledClass"
+        :maxlength="props.maxlength || -1"
+        :minlength="props.minlength || 0"
+        :autocomplete="props.autocomplete || 'on'"
+        :name="props.name || ''"
+        :readonly="props.readonly || false"
+        :autofocus="props.autofocus || false"
+        @focus="isFocus = true"
+        @blur="isFocus = false"
+        @input="hanldeInput"
+      />
+
+      <view v-if="inputSuffixClass" class="suffix_group">
+        <slot name="suffix">
+          <s-icon
+            :icon="props.iconSuffix || 'close'"
+            size="26px"
+            color="#999"
+            @click="handleSuffixIconClick"
+          />
+        </slot>
+      </view>
     </view>
 
     <view
@@ -65,6 +84,8 @@ interface Props {
   disabled?: boolean;
   /** 是否显示清空按钮 默认为false */
   clearable?: boolean;
+  /** 前置图标 */
+  iconPrefix?: keyof typeof ICON_KEY;
   /** 后置图标 */
   iconSuffix?: keyof typeof ICON_KEY;
   /** 前置内容(可配置插槽) */
@@ -85,7 +106,8 @@ interface Props {
 const props = defineProps<Props>();
 const emits = defineEmits<{
   (e: "change", val: Event);
-  (e: "suffixClick", val: Event);
+  (e: "clickSuffix", val: Event);
+  (e: "clickPrefix", val: Event);
   (e: "update:modelValue", val: string);
 }>();
 const slots = useSlots();
@@ -95,6 +117,8 @@ const isFocus = ref(false);
 
 /** 禁用 */
 const inputDisabledClass = computed(() => props.disabled === true);
+/** 是否使用左侧图标类（suffix */
+const inputPrefixClass = computed(() => !!props.iconPrefix || !!slots.prefix);
 /** 是否使用右侧图标类（suffix */
 const inputSuffixClass = computed(
   () =>
@@ -115,8 +139,13 @@ function hanldeInput(e) {
 
 function handleSuffixIconClick(e) {
   /** 如果有后置图标 */
-  if (props.iconSuffix) emits("suffixClick", e);
+  if (props.iconSuffix) emits("clickSuffix", e);
   else if (props.clearable) emits("update:modelValue", "");
+}
+
+function handlePrefixIconClick(e) {
+  /** 如果有前置图标 */
+  if (props.iconSuffix) emits("clickPrefix", e);
 }
 </script>
 <style lang="scss" scoped>
@@ -128,23 +157,28 @@ function handleSuffixIconClick(e) {
   font-size: 14px;
   display: flex;
 
-  .s-input_inner {
-    padding: 0 15px;
-    width: 100%;
+  .s-input_group-content {
+    position: relative;
     height: $INPUTHEIGHT;
-    line-height: $INPUTHEIGHT;
     border: 1px solid #dcdfe6;
     border-radius: 4px;
     background-color: #fff;
-    color: #333;
     transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-    box-sizing: border-box;
-    outline: none;
-    font-size: 14px;
-
     &.s-input_inner-focus {
       border-color: $primary;
     }
+  }
+
+  .s-input_inner {
+    padding: 0 15px;
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    color: #333;
+    border: none;
+    box-sizing: border-box;
+    outline: none;
+    font-size: 14px;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -166,16 +200,25 @@ function handleSuffixIconClick(e) {
       padding-right: 30px;
     }
   }
+  &.s-input-prefix {
+    .s-input_inner {
+      padding-left: 30px;
+    }
+  }
 
+  .prefix_group,
   .suffix_group {
     position: absolute;
-    top: calc(50% - 15px);
-    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+
+  .prefix_group {
+    left: 0;
+  }
+  .suffix_group {
+    right: 0;
   }
 
   .s-input_group-prepend,
