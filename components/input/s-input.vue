@@ -159,7 +159,9 @@ function handlePrefixIconClick(e) {
 
   .s-input_group-content {
     position: relative;
+    width: auto;
     height: $INPUTHEIGHT;
+    flex: 1;
     border: 1px solid #dcdfe6;
     border-radius: 4px;
     background-color: #fff;
