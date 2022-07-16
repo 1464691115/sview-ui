@@ -10,6 +10,7 @@
     <view
       v-if="props.textPrepend || slots.prepend"
       class="s-input_group-prepend s-input_border-append"
+      @click.stop="(e) => emits('clickPrepend', e)"
     >
       <slot name="prepend">
         {{ props.textPrepend || "" }}
@@ -30,7 +31,7 @@
             :icon="props.iconPrefix || 'search'"
             size="26px"
             color="#999"
-            @click="handlePrefixIconClick"
+            @tap="handlePrefixIconClick"
           />
         </slot>
       </view>
@@ -57,7 +58,7 @@
             :icon="props.iconSuffix || 'close'"
             size="26px"
             color="#999"
-            @click="handleSuffixIconClick"
+            @tap="handleSuffixIconClick"
           />
         </slot>
       </view>
@@ -66,6 +67,7 @@
     <view
       v-if="props.textAppend || slots.append"
       class="s-input_group-append s-input_border-prepend"
+      @click.stop="(e) => emits('clickAppend', e)"
     >
       <slot name="append">
         {{ props.textAppend || "" }}
@@ -108,6 +110,8 @@ const emits = defineEmits<{
   (e: "change", val: Event);
   (e: "clickSuffix", val: Event);
   (e: "clickPrefix", val: Event);
+  (e: "clickPrepend", val: Event);
+  (e: "clickAppend", val: Event);
   (e: "update:modelValue", val: string);
 }>();
 const slots = useSlots();
@@ -214,6 +218,8 @@ function handlePrefixIconClick(e) {
     top: 50%;
     transform: translateY(-50%);
     width: 30px;
+    display: flex;
+    justify-content: center;
   }
 
   .prefix_group {
