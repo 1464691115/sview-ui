@@ -3,10 +3,9 @@
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties } from "vue";
-import { Px } from "sview-ui";
 import { ICON_KEY } from "./enums";
-
-export interface Props {
+import { Px } from "sview-ui";
+interface Props {
   icon: keyof typeof ICON_KEY;
   size?: string | number;
   color?: string;
@@ -20,8 +19,8 @@ const iconStyle = computed<CSSProperties>(() => ({
   width: Px(props.size || 48),
   height: Px(props.size || 48),
   color: props.color || "#333",
+  ...(props.customStyle || {}),
 }));
-
 </script>
 <style lang="scss" scoped>
 @font-face {
