@@ -136,7 +136,7 @@ const borderPrependClass = computed(() => slots.prepend || props.textPrepend);
 const borderAppendClass = computed(() => slots.append || props.textAppend);
 
 function hanldeInput(e) {
-  const event = (e as any)?.target.value;
+  const event = (e as any)?.detail.value;
   emits("change", e);
   emits("update:modelValue", event);
 }
