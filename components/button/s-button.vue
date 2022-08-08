@@ -46,7 +46,7 @@ const buttonStyle = computed<CSSProperties>(() => ({
 }
 
 
-.back {
+.s-button.back {
   color: #000;
 }
 
@@ -80,11 +80,11 @@ const buttonStyle = computed<CSSProperties>(() => ({
   background: $error;
 }
 
-.plain {
+.s-button.plain {
   background: transparent;
 }
 
-.onPlain {
+.s-button.onPlain {
   color: #fff;
 }
 </style>

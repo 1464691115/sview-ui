@@ -21,6 +21,7 @@
       class="s-input_group-content"
       :class="{
         's-input_inner-focus': isFocus,
+        's-input_inner-border-none': props.inputBorder === false,
         's-input_border-prepend': borderPrependClass,
         's-input_border-append': borderAppendClass,
       }"
@@ -31,7 +32,7 @@
             :icon="props.iconPrefix || 'search'"
             size="26px"
             color="#999"
-            @tap="handlePrefixIconClick"
+            @tap.stop="handlePrefixIconClick"
           />
         </slot>
       </view>
@@ -50,6 +51,7 @@
         @focus="isFocus = true"
         @blur="isFocus = false"
         @input="hanldeInput"
+        @confirm="hanldeConfirm"
       />
 
       <view v-if="inputSuffixClass" class="suffix_group">
@@ -58,7 +60,7 @@
             :icon="props.iconSuffix || 'close'"
             size="26px"
             color="#999"
-            @tap="handleSuffixIconClick"
+            @tap.stop="handleSuffixIconClick"
           />
         </slot>
       </view>
@@ -96,6 +98,8 @@ interface Props {
   textAppend?: string;
   /** 绑定的值 */
   modelValue?: string;
+  /** 是否显示边框，默认显示 */
+  inputBorder?: boolean;
 
   //TODO 原生属性
   maxlength?: number;
@@ -108,6 +112,7 @@ interface Props {
 const props = defineProps<Props>();
 const emits = defineEmits<{
   (e: "change", val: Event);
+  (e: "confirm", val: string);
   (e: "clickSuffix", val: Event);
   (e: "clickPrefix", val: Event);
   (e: "clickPrepend", val: Event);
@@ -141,6 +146,11 @@ function hanldeInput(e) {
   emits("update:modelValue", event);
 }
 
+function hanldeConfirm() {
+  const event = props.modelValue || "";
+  emits("confirm", event);
+}
+
 function handleSuffixIconClick(e) {
   /** 如果有后置图标 */
   if (props.iconSuffix) emits("clickSuffix", e);
@@ -170,8 +180,13 @@ function handlePrefixIconClick(e) {
     border-radius: 4px;
     background-color: #fff;
     transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
     &.s-input_inner-focus {
       border-color: $primary;
+    }
+
+    &.s-input_inner-border-none {
+      border-width: 0;
     }
   }
 
@@ -206,6 +221,7 @@ function handlePrefixIconClick(e) {
       padding-right: 30px;
     }
   }
+
   &.s-input-prefix {
     .s-input_inner {
       padding-left: 30px;
@@ -225,6 +241,7 @@ function handlePrefixIconClick(e) {
   .prefix_group {
     left: 0;
   }
+
   .suffix_group {
     right: 0;
   }
@@ -247,6 +264,7 @@ function handlePrefixIconClick(e) {
   .s-input_border-prepend {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+
     &.s-input_group-append {
       border-left: 0;
     }
@@ -255,6 +273,7 @@ function handlePrefixIconClick(e) {
   .s-input_border-append {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+
     &.s-input_group-prepend {
       border-right: 0;
     }
