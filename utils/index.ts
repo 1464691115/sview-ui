@@ -24,7 +24,7 @@ export function showToast(content, icon: UniApp.ShowToastOptions['icon'] = 'none
     });
 }
 
-
+/** 判断两个对象是否相等 */
 export function deepEq(a, b, aStack, bStack) {
 
     aStack = aStack || [];
@@ -77,3 +77,27 @@ export function eq(a, b, aStack, bStack) {
     // 更复杂的对象使用 deepEq 函数进行深度比较
     return deepEq(a, b, aStack, bStack);
 };
+
+
+/** 深拷贝 */
+export function deepClone<T>(value: T, hash?: WeakMap<object, any>): T;
+export function deepClone(obj, hash = new WeakMap()) {
+    if (obj == null) return obj
+    if (obj instanceof Date) return new Date(obj);
+
+    if (obj instanceof RegExp) return new RegExp(obj)
+
+    if (typeof obj !== 'object') return obj
+
+    if (hash.get(obj)) return hash.get(obj)
+
+    let cloneObj = new obj.constructor()
+    hash.set(obj, cloneObj)
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            cloneObj[key] = deepClone(obj[key], hash)
+        }
+    }
+    return cloneObj
+}
