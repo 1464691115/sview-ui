@@ -101,3 +101,15 @@ export function deepClone(obj, hash = new WeakMap()) {
     }
     return cloneObj
 }
+
+
+
+
+
+/** (基本类型value对象 & 基本类型数组)转数组对象 */
+export function arrToObject(arr: Record<number, any>, indexKey, valueKey) {
+    return Object.keys(arr || {}).map((key) => ({
+        [indexKey || 'id']: key,
+        [valueKey || 'value']: arr[key],
+    }))
+}
