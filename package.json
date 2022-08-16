@@ -1,14 +1,13 @@
 {
     "name": "sview-ui",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "",
     "main": "index.ts",
     "types": "index.d.ts",
     "directories": {
         "lib": "lib"
     },
-    "scripts": {
-    },
+    "scripts": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/1464691115/sview-ui.git"
@@ -19,8 +18,7 @@
         "url": "https://github.com/1464691115/sview-ui/issues"
     },
     "homepage": "https://github.com/1464691115/sview-ui#readme",
-    "dependencies": {
-    },
+    "dependencies": {},
     "devDependencies": {
         "@dcloudio/types": "^2.6.4",
         "@types/node": "^18.0.0",
