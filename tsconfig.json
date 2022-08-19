@@ -21,7 +21,6 @@
         "lib": ["esnext", "dom"],
         "baseUrl": "./",
         "paths": {
-            "@/*": ["./*"],
             "sview-ui": ["./index.ts"],
             "sview-ui/*": ["./*"],
         },

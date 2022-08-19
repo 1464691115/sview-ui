@@ -8,15 +8,16 @@
     ]"
     :style="buttonStyle"
   >
-    {{ buttonProps.title || "" }}
+    {{ buttonProps.title || buttonProps.text || "" }}
   </view>
 </template>
 <script lang="ts" setup>
-import { computed, CSSProperties, reactive, watch } from "vue";
-import { funcForIn, shape } from "sview-ui";
+import { computed, CSSProperties } from "vue";
+import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
 interface Props {
   /** 显示文字 */
-  title: string;
+  title?: string;
+  text?: string;
   /** 按钮的样式类型 */
   type?: "info" | "primary" | "error" | "warning" | "success";
   /** 按钮外观形状，见上方说明 */
@@ -32,24 +33,13 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const buttonProps = reactive(props);
-
-watch(
-  () => props,
-  (val) => funcForIn(val, buttonProps)
-);
-
-watch(
-  () => props.customProps,
-  (val) => funcForIn(val?.customProps, buttonProps),
-  { deep: true }
-);
+const buttonProps = useComponentsProps(props);
 
 const buttonStyle = computed<CSSProperties>(() => ({
   borderRadius:
     buttonProps.shape != "square"
-      ? (buttonProps.customStyle && buttonProps.customStyle.height) || `80rpx`
-      : "12rpx",
+      ? (buttonProps.customStyle && buttonProps.customStyle.height) || `80px`
+      : "6px",
   opacity: buttonProps.disabled === true ? 0.4 : 1,
   ...(buttonProps.customStyle || {}),
 }));
@@ -63,6 +53,12 @@ const buttonStyle = computed<CSSProperties>(() => ({
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  transition: all 0.15s ease-out;
+
+  &:active {
+    opacity: 0.6 !important;
+  }
 }
 
 .s-button.back {

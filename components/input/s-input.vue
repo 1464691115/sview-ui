@@ -39,7 +39,6 @@
 
       <input
         class="s-input_inner"
-        :value="inputProps.modelValue"
         :placeholder="inputProps.placeholder || ''"
         :disabled="inputDisabledClass"
         :maxlength="inputProps.maxlength || -1"
@@ -78,8 +77,8 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { funcForIn } from "sview-ui";
-import { computed, reactive, ref, useSlots, watch } from "vue";
+import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
+import { computed, ref, useSlots } from "vue";
 import { ICON_KEY } from "../icon/enums";
 
 interface Props {
@@ -128,18 +127,7 @@ const slots = useSlots();
 /** input是否获取到焦点 */
 const isFocus = ref(false);
 
-const inputProps = reactive(props);
-
-watch(
-  () => props,
-  (val) => funcForIn(val, inputProps)
-);
-
-watch(
-  () => props.customProps,
-  (val) => funcForIn(val?.customProps, inputProps),
-  { deep: true }
-);
+const inputProps = useComponentsProps(props);
 
 /** 禁用 */
 const inputDisabledClass = computed(() => inputProps.disabled === true);
@@ -158,13 +146,13 @@ const borderPrependClass = computed(() => slots.prepend || inputProps.textPrepen
 const borderAppendClass = computed(() => slots.append || inputProps.textAppend);
 
 function hanldeInput(e) {
-  const event = (e as any)?.detail.value;
+  const event = e?.detail?.value || e?.target?.value;
   emits("change", e);
   emits("update:modelValue", event);
 }
 
 function hanldeConfirm() {
-  const event = inputProps.modelValue || "";
+  const event = props.modelValue || "";
   emits("confirm", event);
 }
 
