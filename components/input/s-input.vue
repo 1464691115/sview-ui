@@ -8,12 +8,12 @@
     }"
   >
     <view
-      v-if="props.textPrepend || slots.prepend"
+      v-if="inputProps.textPrepend || slots.prepend"
       class="s-input_group-prepend s-input_border-append"
       @click.stop="(e) => emits('clickPrepend', e)"
     >
       <slot name="prepend">
-        {{ props.textPrepend || "" }}
+        {{ inputProps.textPrepend || "" }}
       </slot>
     </view>
 
@@ -21,15 +21,15 @@
       class="s-input_group-content"
       :class="{
         's-input_inner-focus': isFocus,
-        's-input_inner-border-none': props.inputBorder === false,
+        's-input_inner-border-none': inputProps.inputBorder === false,
         's-input_border-prepend': borderPrependClass,
         's-input_border-append': borderAppendClass,
       }"
     >
-      <view v-if="slots.prefix || props.iconPrefix" class="prefix_group">
+      <view v-if="slots.prefix || inputProps.iconPrefix" class="prefix_group">
         <slot name="prefix">
           <s-icon
-            :icon="props.iconPrefix || 'search'"
+            :icon="inputProps.iconPrefix || 'search'"
             size="26px"
             color="#999"
             @tap.stop="handlePrefixIconClick"
@@ -39,15 +39,15 @@
 
       <input
         class="s-input_inner"
-        :value="props.modelValue"
-        :placeholder="props.placeholder || ''"
+        :value="inputProps.modelValue"
+        :placeholder="inputProps.placeholder || ''"
         :disabled="inputDisabledClass"
-        :maxlength="props.maxlength || -1"
-        :minlength="props.minlength || 0"
-        :autocomplete="props.autocomplete || 'on'"
-        :name="props.name || ''"
-        :readonly="props.readonly || false"
-        :autofocus="props.autofocus || false"
+        :maxlength="inputProps.maxlength || -1"
+        :minlength="inputProps.minlength || 0"
+        :autocomplete="inputProps.autocomplete || 'on'"
+        :name="inputProps.name || ''"
+        :readonly="inputProps.readonly || false"
+        :autofocus="inputProps.autofocus || false"
         @focus="isFocus = true"
         @blur="isFocus = false"
         @input="hanldeInput"
@@ -57,7 +57,7 @@
       <view v-if="inputSuffixClass" class="suffix_group">
         <slot name="suffix">
           <s-icon
-            :icon="props.iconSuffix || 'close'"
+            :icon="inputProps.iconSuffix || 'close'"
             size="26px"
             color="#999"
             @tap.stop="handleSuffixIconClick"
@@ -67,18 +67,19 @@
     </view>
 
     <view
-      v-if="props.textAppend || slots.append"
+      v-if="inputProps.textAppend || slots.append"
       class="s-input_group-append s-input_border-prepend"
       @click.stop="(e) => emits('clickAppend', e)"
     >
       <slot name="append">
-        {{ props.textAppend || "" }}
+        {{ inputProps.textAppend || "" }}
       </slot>
     </view>
   </view>
 </template>
 <script lang="ts" setup>
-import { computed, ref, useSlots } from "vue";
+import { funcForIn } from "sview-ui";
+import { computed, reactive, ref, useSlots, watch } from "vue";
 import { ICON_KEY } from "../icon/enums";
 
 interface Props {
@@ -108,6 +109,9 @@ interface Props {
   name?: string;
   readonly?: boolean;
   autofocus?: boolean;
+
+  /** 兼容小程序的 v-bind 用法 */
+  customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
@@ -124,21 +128,34 @@ const slots = useSlots();
 /** input是否获取到焦点 */
 const isFocus = ref(false);
 
+const inputProps = reactive(props);
+
+watch(
+  () => props,
+  (val) => funcForIn(val, inputProps)
+);
+
+watch(
+  () => props.customProps,
+  (val) => funcForIn(val?.customProps, inputProps),
+  { deep: true }
+);
+
 /** 禁用 */
-const inputDisabledClass = computed(() => props.disabled === true);
+const inputDisabledClass = computed(() => inputProps.disabled === true);
 /** 是否使用左侧图标类（suffix */
-const inputPrefixClass = computed(() => !!props.iconPrefix || !!slots.prefix);
+const inputPrefixClass = computed(() => !!inputProps.iconPrefix || !!slots.prefix);
 /** 是否使用右侧图标类（suffix */
 const inputSuffixClass = computed(
   () =>
-    !!props.iconSuffix ||
-    (props.clearable && props.modelValue!?.length > 0) ||
+    !!inputProps.iconSuffix ||
+    (inputProps.clearable && inputProps.modelValue!?.length > 0) ||
     !!slots.suffix
 );
 /** input左上下边框圆角是否为0 */
-const borderPrependClass = computed(() => slots.prepend || props.textPrepend);
+const borderPrependClass = computed(() => slots.prepend || inputProps.textPrepend);
 /** input右上下边框圆角是否为0 */
-const borderAppendClass = computed(() => slots.append || props.textAppend);
+const borderAppendClass = computed(() => slots.append || inputProps.textAppend);
 
 function hanldeInput(e) {
   const event = (e as any)?.detail.value;
@@ -147,19 +164,19 @@ function hanldeInput(e) {
 }
 
 function hanldeConfirm() {
-  const event = props.modelValue || "";
+  const event = inputProps.modelValue || "";
   emits("confirm", event);
 }
 
 function handleSuffixIconClick(e) {
   /** 如果有后置图标 */
-  if (props.iconSuffix) emits("clickSuffix", e);
-  else if (props.clearable) emits("update:modelValue", "");
+  if (inputProps.iconSuffix) emits("clickSuffix", e);
+  else if (inputProps.clearable) emits("update:modelValue", "");
 }
 
 function handlePrefixIconClick(e) {
   /** 如果有前置图标 */
-  if (props.iconSuffix) emits("clickPrefix", e);
+  if (inputProps.iconSuffix) emits("clickPrefix", e);
 }
 </script>
 <style lang="scss" scoped>

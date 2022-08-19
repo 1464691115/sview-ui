@@ -103,13 +103,22 @@ export function deepClone(obj, hash = new WeakMap()) {
 }
 
 
-
-
-
 /** (基本类型value对象 & 基本类型数组)转数组对象 */
-export function arrToObject(arr: Record<number, any>, indexKey, valueKey) {
+export function arrToObjectArr<A extends Record<number, any>, I extends string = 'id', V extends string = 'value'>(arr: A, indexKey: I, valueKey: V): (Record<I, string | number> & Record<V, A[0]>)[]
+export function arrToObjectArr(arr, indexKey = 'id', valueKey = 'value') {
     return Object.keys(arr || {}).map((key) => ({
-        [indexKey || 'id']: key,
-        [valueKey || 'value']: arr[key],
-    }))
+        [indexKey]: key,
+        [valueKey]: arr[key],
+    })) as any
+}
+
+/** 拷贝 发送对象 的属性到 接收对象 */
+export function funcForIn(send, receiver) {
+    if (!send) throw 'send is undefined'
+    for (const key in send) {
+        if (Object.prototype.hasOwnProperty.call(send, key)) {
+            const element = send[key];
+            receiver[key] = element
+        }
+    }
 }

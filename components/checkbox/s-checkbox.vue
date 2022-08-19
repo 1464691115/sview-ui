@@ -14,12 +14,12 @@
       />
     </view>
     <slot />
-    <text v-if="!$slots.default">{{ props.label || "" }}</text>
+    <text v-if="!$slots.default">{{ checkboxProps.label || "" }}</text>
   </view>
 </template>
 <script lang="ts" setup>
-import { shape } from "sview-ui";
-import { computed, CSSProperties } from "vue";
+import { shape, funcForIn } from "sview-ui";
+import { computed, CSSProperties, reactive, watch } from "vue";
 
 interface Props {
   name: string;
@@ -27,6 +27,8 @@ interface Props {
   customStyle?: CSSProperties;
   label?: string;
   modelValue?: boolean;
+  /** 兼容小程序的 v-bind 用法 */
+  customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
@@ -34,15 +36,28 @@ const emits = defineEmits<{
   (e: "update:modelValue", val: boolean);
 }>();
 
+const checkboxProps = reactive(props);
+
+watch(
+  () => checkboxProps,
+  (val) => funcForIn(val, checkboxProps)
+);
+
+watch(
+  () => checkboxProps.customProps,
+  (val) => funcForIn(val?.customProps, checkboxProps),
+  { deep: true }
+);
+
 const checkboxStyle = computed<CSSProperties>(() => ({}));
 const checkboxConStyle = computed<CSSProperties>(() => ({
-  borderRadius: props.shape != "square" ? `51%` : "3px",
-  ...(props.customStyle || {}),
+  borderRadius: checkboxProps.shape != "square" ? `51%` : "3px",
+  ...(checkboxProps.customStyle || {}),
 }));
-const checkVal = computed(() => props.modelValue);
+const checkVal = computed(() => checkboxProps.modelValue);
 
 function handleTapCheck() {
-  emits("change", { [props.name]: !checkVal.value });
+  emits("change", { [checkboxProps.name]: !checkVal.value });
   emits("update:modelValue", !checkVal.value);
 }
 </script>

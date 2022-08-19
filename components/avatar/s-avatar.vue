@@ -1,11 +1,15 @@
 <template>
   <view class="s-avatar" :style="avatarStyle">
-    <image :src="props.src" :mode="props.mode || 'scaleToFill'" class="image" />
+    <image
+      :src="avatarProps.src"
+      :mode="avatarProps.mode || 'scaleToFill'"
+      class="image"
+    />
   </view>
 </template>
 <script lang="ts" setup>
-import { isCircle, Px, ImageMode, shape } from "sview-ui";
-import { computed, CSSProperties } from "vue";
+import { isCircle, Px, ImageMode, shape, funcForIn } from "sview-ui";
+import { computed, CSSProperties, reactive, watch } from "vue";
 
 interface Props {
   /** 头像路径，如加载失败，将会显示默认头像 */
@@ -20,16 +24,32 @@ interface Props {
   bgColor?: string;
   /** 是否使用随机背景色 */
   randomBgColor?: boolean;
-  customeStyle?: CSSProperties
+  customeStyle?: CSSProperties;
+  /** 兼容小程序的 v-bind 用法 */
+  customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
 
+const avatarProps = reactive(props);
+
+watch(
+  () => props,
+  (val) => funcForIn(avatarProps, val)
+);
+
+watch(
+  () => props.customProps,
+  (val) => funcForIn(val, props),
+  { deep: true }
+);
+
 const avatarStyle = computed<CSSProperties>(() => ({
-  borderRadius: isCircle(props.shape != "square"),
-  backgroundColor: props.bgColor || props.randomBgColor ? changeColor() : "transparent",
-  width: Px(props.size || 80),
-  height: Px(props.size || 80),
-  ...(props.customeStyle || {})
+  borderRadius: isCircle(avatarProps.shape != "square"),
+  backgroundColor:
+    avatarProps.bgColor || avatarProps.randomBgColor ? changeColor() : "transparent",
+  width: Px(avatarProps.size || 80),
+  height: Px(avatarProps.size || 80),
+  ...(avatarProps.customeStyle || {}),
 }));
 
 /** 随机获取颜色 */

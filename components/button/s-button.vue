@@ -1,13 +1,19 @@
 <template>
-  <view class="s-button"
-    :class="[props.plain ? 'plain' : 'back', props.type && !props.plain && 'onPlain', props.type || 'info']"
-    :style="buttonStyle">
-    {{ props.title || "" }}
+  <view
+    class="s-button"
+    :class="[
+      buttonProps.plain ? 'plain' : 'back',
+      buttonProps.type && !buttonProps.plain && 'onPlain',
+      buttonProps.type || 'info',
+    ]"
+    :style="buttonStyle"
+  >
+    {{ buttonProps.title || "" }}
   </view>
 </template>
 <script lang="ts" setup>
-import { computed, CSSProperties } from "vue";
-import { shape } from "sview-ui";
+import { computed, CSSProperties, reactive, watch } from "vue";
+import { funcForIn, shape } from "sview-ui";
 interface Props {
   /** 显示文字 */
   title: string;
@@ -21,17 +27,31 @@ interface Props {
   disabled?: boolean;
   /** 自定义样式 */
   customStyle?: CSSProperties;
+  /** 兼容小程序的 v-bind 用法 */
+  customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
 
+const buttonProps = reactive(props);
+
+watch(
+  () => props,
+  (val) => funcForIn(val, buttonProps)
+);
+
+watch(
+  () => props.customProps,
+  (val) => funcForIn(val?.customProps, buttonProps),
+  { deep: true }
+);
 
 const buttonStyle = computed<CSSProperties>(() => ({
   borderRadius:
-    props.shape != "square"
-      ? (props.customStyle && props.customStyle.height) || `80rpx`
+    buttonProps.shape != "square"
+      ? (buttonProps.customStyle && buttonProps.customStyle.height) || `80rpx`
       : "12rpx",
-  opacity: props.disabled === true ? 0.4 : 1,
-  ...(props.customStyle || {}),
+  opacity: buttonProps.disabled === true ? 0.4 : 1,
+  ...(buttonProps.customStyle || {}),
 }));
 </script>
 <style lang="scss" scoped>
@@ -44,7 +64,6 @@ const buttonStyle = computed<CSSProperties>(() => ({
   align-items: center;
   justify-content: center;
 }
-
 
 .s-button.back {
   color: #000;
