@@ -18,7 +18,6 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { shape } from "sview-ui";
 import { computed, CSSProperties } from "vue";
 
 interface Props {

@@ -25,6 +25,7 @@
     "homepage": "https://github.com/1464691115/sview-ui#readme",
     "dependencies": {
         "node-sass": "^7.0.1",
+        "postcss-px-to-viewport": "^1.1.1",
         "sass": "^1.51.0",
         "sass-loader": "^13.0.1",
         "vite-plugin-style-import": "1.4.1",

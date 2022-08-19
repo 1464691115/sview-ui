@@ -1,16 +1,23 @@
 <template>
-  <view class="s-button"
-    :class="[props.plain ? 'plain' : 'back', props.type && !props.plain && 'onPlain', props.type || 'info']"
-    :style="buttonStyle">
-    {{ props.title || "" }}
+  <view
+    class="s-button"
+    :class="[
+      buttonProps.plain ? 'plain' : 'back',
+      buttonProps.type && !buttonProps.plain && 'onPlain',
+      buttonProps.type || 'info',
+    ]"
+    :style="buttonStyle"
+  >
+    {{ buttonProps.title || buttonProps.text || "" }}
   </view>
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties } from "vue";
-import { shape } from "sview-ui";
+import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
 interface Props {
   /** 显示文字 */
-  title: string;
+  title?: string;
+  text?: string;
   /** 按钮的样式类型 */
   type?: "info" | "primary" | "error" | "warning" | "success";
   /** 按钮外观形状，见上方说明 */
@@ -21,17 +28,20 @@ interface Props {
   disabled?: boolean;
   /** 自定义样式 */
   customStyle?: CSSProperties;
+  /** 兼容小程序的 v-bind 用法 */
+  customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
 
+const buttonProps = useComponentsProps(props);
 
 const buttonStyle = computed<CSSProperties>(() => ({
   borderRadius:
-    props.shape != "square"
-      ? (props.customStyle && props.customStyle.height) || `80rpx`
-      : "12rpx",
-  opacity: props.disabled === true ? 0.4 : 1,
-  ...(props.customStyle || {}),
+    buttonProps.shape != "square"
+      ? (buttonProps.customStyle && buttonProps.customStyle.height) || `80px`
+      : "6px",
+  opacity: buttonProps.disabled === true ? 0.4 : 1,
+  ...(buttonProps.customStyle || {}),
 }));
 </script>
 <style lang="scss" scoped>
@@ -43,10 +53,15 @@ const buttonStyle = computed<CSSProperties>(() => ({
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  transition: all 0.15s ease-out;
+
+  &:active {
+    opacity: 0.6 !important;
+  }
 }
 
-
-.back {
+.s-button.back {
   color: #000;
 }
 
@@ -80,11 +95,11 @@ const buttonStyle = computed<CSSProperties>(() => ({
   background: $error;
 }
 
-.plain {
+.s-button.plain {
   background: transparent;
 }
 
-.onPlain {
+.s-button.onPlain {
   color: #fff;
 }
 </style>

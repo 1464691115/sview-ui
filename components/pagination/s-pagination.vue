@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { showToast } from "sview-ui";
-import SIcon from "../icon";
+import SIcon from "../icon/s-icon.vue";
 interface Props {
 	/** 当前页数 */
 	current: number

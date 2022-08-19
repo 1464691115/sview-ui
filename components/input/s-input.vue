@@ -8,11 +8,12 @@
     }"
   >
     <view
-      v-if="props.textPrepend || slots.prepend"
+      v-if="inputProps.textPrepend || slots.prepend"
       class="s-input_group-prepend s-input_border-append"
+      @click.stop="(e) => emits('clickPrepend', e)"
     >
       <slot name="prepend">
-        {{ props.textPrepend || "" }}
+        {{ inputProps.textPrepend || "" }}
       </slot>
     </view>
 
@@ -20,60 +21,63 @@
       class="s-input_group-content"
       :class="{
         's-input_inner-focus': isFocus,
+        's-input_inner-border-none': inputProps.inputBorder === false,
         's-input_border-prepend': borderPrependClass,
         's-input_border-append': borderAppendClass,
       }"
     >
-      <view v-if="slots.prefix || props.iconPrefix" class="prefix_group">
+      <view v-if="slots.prefix || inputProps.iconPrefix" class="prefix_group">
         <slot name="prefix">
           <s-icon
-            :icon="props.iconPrefix || 'search'"
+            :icon="inputProps.iconPrefix || 'search'"
             size="26px"
             color="#999"
-            @click="handlePrefixIconClick"
+            @tap.stop="handlePrefixIconClick"
           />
         </slot>
       </view>
 
       <input
         class="s-input_inner"
-        :value="props.modelValue"
-        :placeholder="props.placeholder || ''"
+        :placeholder="inputProps.placeholder || ''"
         :disabled="inputDisabledClass"
-        :maxlength="props.maxlength || -1"
-        :minlength="props.minlength || 0"
-        :autocomplete="props.autocomplete || 'on'"
-        :name="props.name || ''"
-        :readonly="props.readonly || false"
-        :autofocus="props.autofocus || false"
+        :maxlength="inputProps.maxlength || -1"
+        :minlength="inputProps.minlength || 0"
+        :autocomplete="inputProps.autocomplete || 'on'"
+        :name="inputProps.name || ''"
+        :readonly="inputProps.readonly || false"
+        :autofocus="inputProps.autofocus || false"
         @focus="isFocus = true"
         @blur="isFocus = false"
         @input="hanldeInput"
+        @confirm="hanldeConfirm"
       />
 
       <view v-if="inputSuffixClass" class="suffix_group">
         <slot name="suffix">
           <s-icon
-            :icon="props.iconSuffix || 'close'"
+            :icon="inputProps.iconSuffix || 'close'"
             size="26px"
             color="#999"
-            @click="handleSuffixIconClick"
+            @tap.stop="handleSuffixIconClick"
           />
         </slot>
       </view>
     </view>
 
     <view
-      v-if="props.textAppend || slots.append"
+      v-if="inputProps.textAppend || slots.append"
       class="s-input_group-append s-input_border-prepend"
+      @click.stop="(e) => emits('clickAppend', e)"
     >
       <slot name="append">
-        {{ props.textAppend || "" }}
+        {{ inputProps.textAppend || "" }}
       </slot>
     </view>
   </view>
 </template>
 <script lang="ts" setup>
+import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
 import { computed, ref, useSlots } from "vue";
 import { ICON_KEY } from "../icon/enums";
 
@@ -94,6 +98,8 @@ interface Props {
   textAppend?: string;
   /** 绑定的值 */
   modelValue?: string;
+  /** 是否显示边框，默认显示 */
+  inputBorder?: boolean;
 
   //TODO 原生属性
   maxlength?: number;
@@ -102,12 +108,18 @@ interface Props {
   name?: string;
   readonly?: boolean;
   autofocus?: boolean;
+
+  /** 兼容小程序的 v-bind 用法 */
+  customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
   (e: "change", val: Event);
+  (e: "confirm", val: string);
   (e: "clickSuffix", val: Event);
   (e: "clickPrefix", val: Event);
+  (e: "clickPrepend", val: Event);
+  (e: "clickAppend", val: Event);
   (e: "update:modelValue", val: string);
 }>();
 const slots = useSlots();
@@ -115,37 +127,44 @@ const slots = useSlots();
 /** input是否获取到焦点 */
 const isFocus = ref(false);
 
+const inputProps = useComponentsProps(props);
+
 /** 禁用 */
-const inputDisabledClass = computed(() => props.disabled === true);
+const inputDisabledClass = computed(() => inputProps.disabled === true);
 /** 是否使用左侧图标类（suffix */
-const inputPrefixClass = computed(() => !!props.iconPrefix || !!slots.prefix);
+const inputPrefixClass = computed(() => !!inputProps.iconPrefix || !!slots.prefix);
 /** 是否使用右侧图标类（suffix */
 const inputSuffixClass = computed(
   () =>
-    !!props.iconSuffix ||
-    (props.clearable && props.modelValue!?.length > 0) ||
+    !!inputProps.iconSuffix ||
+    (inputProps.clearable && inputProps.modelValue!?.length > 0) ||
     !!slots.suffix
 );
 /** input左上下边框圆角是否为0 */
-const borderPrependClass = computed(() => slots.prepend || props.textPrepend);
+const borderPrependClass = computed(() => slots.prepend || inputProps.textPrepend);
 /** input右上下边框圆角是否为0 */
-const borderAppendClass = computed(() => slots.append || props.textAppend);
+const borderAppendClass = computed(() => slots.append || inputProps.textAppend);
 
 function hanldeInput(e) {
-  const event = (e as any)?.target.value;
+  const event = e?.detail?.value || e?.target?.value;
   emits("change", e);
   emits("update:modelValue", event);
 }
 
+function hanldeConfirm() {
+  const event = props.modelValue || "";
+  emits("confirm", event);
+}
+
 function handleSuffixIconClick(e) {
   /** 如果有后置图标 */
-  if (props.iconSuffix) emits("clickSuffix", e);
-  else if (props.clearable) emits("update:modelValue", "");
+  if (inputProps.iconSuffix) emits("clickSuffix", e);
+  else if (inputProps.clearable) emits("update:modelValue", "");
 }
 
 function handlePrefixIconClick(e) {
   /** 如果有前置图标 */
-  if (props.iconSuffix) emits("clickPrefix", e);
+  if (inputProps.iconSuffix) emits("clickPrefix", e);
 }
 </script>
 <style lang="scss" scoped>
@@ -159,13 +178,20 @@ function handlePrefixIconClick(e) {
 
   .s-input_group-content {
     position: relative;
+    width: auto;
     height: $INPUTHEIGHT;
+    flex: 1;
     border: 1px solid #dcdfe6;
     border-radius: 4px;
     background-color: #fff;
     transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
     &.s-input_inner-focus {
       border-color: $primary;
+    }
+
+    &.s-input_inner-border-none {
+      border-width: 0;
     }
   }
 
@@ -200,6 +226,7 @@ function handlePrefixIconClick(e) {
       padding-right: 30px;
     }
   }
+
   &.s-input-prefix {
     .s-input_inner {
       padding-left: 30px;
@@ -212,11 +239,14 @@ function handlePrefixIconClick(e) {
     top: 50%;
     transform: translateY(-50%);
     width: 30px;
+    display: flex;
+    justify-content: center;
   }
 
   .prefix_group {
     left: 0;
   }
+
   .suffix_group {
     right: 0;
   }
@@ -239,6 +269,7 @@ function handlePrefixIconClick(e) {
   .s-input_border-prepend {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+
     &.s-input_group-append {
       border-left: 0;
     }
@@ -247,6 +278,7 @@ function handlePrefixIconClick(e) {
   .s-input_border-append {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+
     &.s-input_group-prepend {
       border-right: 0;
     }

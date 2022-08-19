@@ -4,7 +4,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { isCircle, Px, ImageMode, shape } from "sview-ui";
+import { isCircle, Px } from "sview-ui";
 import { computed, CSSProperties } from "vue";
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
   bgColor?: string;
   /** 是否使用随机背景色 */
   randomBgColor?: boolean;
-  customeStyle?: CSSProperties
+  customeStyle?: CSSProperties;
 }
 const props = defineProps<Props>();
 
@@ -29,7 +29,7 @@ const avatarStyle = computed<CSSProperties>(() => ({
   backgroundColor: props.bgColor || props.randomBgColor ? changeColor() : "transparent",
   width: Px(props.size || 80),
   height: Px(props.size || 80),
-  ...(props.customeStyle || {})
+  ...(props.customeStyle || {}),
 }));
 
 /** 随机获取颜色 */

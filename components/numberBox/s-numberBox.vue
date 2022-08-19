@@ -13,7 +13,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties, reactive, ref, watch } from "vue";
-import SIcon from "../icon";
+import SIcon from "../icon/s-icon.vue";
 import { showToast } from "sview-ui";
 
 interface Props {
