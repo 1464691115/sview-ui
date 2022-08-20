@@ -21,7 +21,7 @@
       class="s-input_group-content"
       :class="{
         's-input_inner-focus': isFocus,
-        's-input_inner-border-none': inputProps.inputBorder === false,
+        's-input_inner-border-none': inputProps.inputBorder !== true,
         's-input_border-prepend': borderPrependClass,
         's-input_border-append': borderAppendClass,
       }"
@@ -39,6 +39,7 @@
 
       <input
         class="s-input_inner"
+        :value="props.modelValue"
         :placeholder="inputProps.placeholder || ''"
         :disabled="inputDisabledClass"
         :maxlength="inputProps.maxlength || -1"
@@ -97,7 +98,7 @@ interface Props {
   /** 后置内容(可配置插槽) */
   textAppend?: string;
   /** 绑定的值 */
-  modelValue?: string;
+  modelValue?: string | number;
   /** 是否显示边框，默认显示 */
   inputBorder?: boolean;
 
@@ -110,17 +111,24 @@ interface Props {
   autofocus?: boolean;
 
   /** 兼容小程序的 v-bind 用法 不能添加 存在 双向绑定的 props(不能加emits里update的) */
-  customProps?: Exclude<Props, "customProps">;
+  customProps?: Omit<Props, "customProps">;
 }
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  inputBorder: undefined,
+  clearable: undefined,
+  disabled: undefined,
+  readonly: undefined,
+  autofocus: undefined,
+});
+
 const emits = defineEmits<{
   (e: "change", val: Event);
-  (e: "confirm", val: string);
+  (e: "confirm", val: Props["modelValue"]);
   (e: "clickSuffix", val: Event);
   (e: "clickPrefix", val: Event);
   (e: "clickPrepend", val: Event);
   (e: "clickAppend", val: Event);
-  (e: "update:modelValue", val: string);
+  (e: "update:modelValue", val: Props["modelValue"]);
 }>();
 const slots = useSlots();
 
@@ -137,7 +145,7 @@ const inputPrefixClass = computed(() => !!inputProps.iconPrefix || !!slots.prefi
 const inputSuffixClass = computed(
   () =>
     !!inputProps.iconSuffix ||
-    (inputProps.clearable && props.modelValue!?.length > 0) ||
+    (inputProps.clearable && props.modelValue!?.toString().length > 0) ||
     !!slots.suffix
 );
 /** input左上下边框圆角是否为0 */
