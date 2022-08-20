@@ -109,7 +109,7 @@ interface Props {
   readonly?: boolean;
   autofocus?: boolean;
 
-  /** 兼容小程序的 v-bind 用法 */
+  /** 兼容小程序的 v-bind 用法 不能添加 存在 双向绑定的 props(不能加emits里update的) */
   customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
@@ -137,7 +137,7 @@ const inputPrefixClass = computed(() => !!inputProps.iconPrefix || !!slots.prefi
 const inputSuffixClass = computed(
   () =>
     !!inputProps.iconSuffix ||
-    (inputProps.clearable && inputProps.modelValue!?.length > 0) ||
+    (inputProps.clearable && props.modelValue!?.length > 0) ||
     !!slots.suffix
 );
 /** input左上下边框圆角是否为0 */

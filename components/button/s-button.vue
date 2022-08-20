@@ -28,7 +28,7 @@ interface Props {
   disabled?: boolean;
   /** 自定义样式 */
   customStyle?: CSSProperties;
-  /** 兼容小程序的 v-bind 用法 */
+  /** 兼容小程序的 v-bind 用法 不能添加 存在 双向绑定的 props(不能加emits里update的) */
   customProps?: Exclude<Props, "customProps">;
 }
 const props = defineProps<Props>();
