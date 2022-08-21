@@ -21,7 +21,7 @@
       class="s-input_group-content"
       :class="{
         's-input_inner-focus': isFocus,
-        's-input_inner-border-none': inputProps.inputBorder !== true,
+        's-input_inner-border-none': inputProps.inputBorder === false,
         's-input_border-prepend': borderPrependClass,
         's-input_border-append': borderAppendClass,
       }"
