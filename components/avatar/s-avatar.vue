@@ -1,10 +1,6 @@
 <template>
   <view class="s-avatar" :style="avatarStyle">
-    <image
-      :src="avatarProps.src"
-      :mode="avatarProps.mode || 'scaleToFill'"
-      class="image"
-    />
+    <s-image :src="props.src" :mode="props.mode || 'scaleToFill'" class="image" />
   </view>
 </template>
 <script lang="ts" setup>
@@ -17,7 +13,7 @@ interface Props {
   /** 头像形状 */
   shape?: shape;
   /** 头像尺寸 默认80 单位px*/
-  size?: number;
+  size?: number | string;
   /** 头像图片的裁剪类型，与uni的image组件的mode参数一致，如效果达不到需求，可尝试传widthFix值 */
   mode?: ImageMode;
   /** 背景颜色，一般显示文字时用 */
@@ -30,26 +26,12 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const avatarProps = reactive(props);
-
-watch(
-  () => props,
-  (val) => funcForIn(avatarProps, val)
-);
-
-watch(
-  () => props.customProps,
-  (val) => funcForIn(val, props),
-  { deep: true }
-);
-
 const avatarStyle = computed<CSSProperties>(() => ({
-  borderRadius: isCircle(avatarProps.shape != "square"),
-  backgroundColor:
-    avatarProps.bgColor || avatarProps.randomBgColor ? changeColor() : "transparent",
-  width: Px(avatarProps.size || 80),
-  height: Px(avatarProps.size || 80),
-  ...(avatarProps.customeStyle || {}),
+  borderRadius: isCircle(props.shape != "square"),
+  backgroundColor: props.bgColor || props.randomBgColor ? changeColor() : "transparent",
+  width: Px(props.size || 80),
+  height: Px(props.size || 80),
+  ...(props.customeStyle || {}),
 }));
 
 /** 随机获取颜色 */
