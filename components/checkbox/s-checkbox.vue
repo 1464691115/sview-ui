@@ -18,8 +18,9 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { shape, funcForIn } from "sview-ui";
-import { computed, CSSProperties, reactive, watch } from "vue";
+import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
+import { shape } from "sview-ui/typings/components";
+import { computed, CSSProperties } from "vue";
 
 interface Props {
   name: string;
@@ -28,7 +29,7 @@ interface Props {
   label?: string;
   modelValue?: boolean;
   /** 兼容小程序的 v-bind 用法 */
-  customProps?: Exclude<Props, "customProps">;
+  customProps?: Omit<Props, "customProps">;
 }
 const props = defineProps<Props>();
 const emits = defineEmits<{
@@ -36,18 +37,7 @@ const emits = defineEmits<{
   (e: "update:modelValue", val: boolean);
 }>();
 
-const checkboxProps = reactive(props);
-
-watch(
-  () => checkboxProps,
-  (val) => funcForIn(val, checkboxProps)
-);
-
-watch(
-  () => checkboxProps.customProps,
-  (val) => funcForIn(val?.customProps, checkboxProps),
-  { deep: true }
-);
+const checkboxProps = useComponentsProps(props);
 
 const checkboxStyle = computed<CSSProperties>(() => ({}));
 const checkboxConStyle = computed<CSSProperties>(() => ({

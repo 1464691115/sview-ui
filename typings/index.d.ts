@@ -13,25 +13,6 @@ declare module '*.vue' {
 }
 
 
-declare type ImageMode =
-    | "scaleToFill"
-    | "aspectFit"
-    | "aspectFill"
-    | "widthFix"
-    | "heightFix"
-    | "top"
-    | "bottom"
-    | "center"
-    | "left"
-    | "right"
-    | "top left"
-    | "top right"
-    | "bottom left"
-    | "bottom right"
-
-declare type shape = "circle" | "square";
-
-
 declare type Mutable<T> = {
     -readonly [K in keyof T]: T[K]
 }

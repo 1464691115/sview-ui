@@ -11,9 +11,9 @@
   </view>
 </template>
 <script lang="ts" setup>
+import { shape } from "sview-ui/typings/components";
 import { computed, CSSProperties, ref, watch } from "vue";
 import SCheckbox from "./s-checkbox.vue";
-import type { shape } from "sview-ui";
 
 interface Props {
   placement?: CSSProperties["flexDirection"];

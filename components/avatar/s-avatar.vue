@@ -1,11 +1,12 @@
 <template>
   <view class="s-avatar" :style="avatarStyle">
-    <s-image :src="props.src" :mode="props.mode || 'scaleToFill'" class="image" />
+    <s-image :src="props.src || ''" :mode="props.mode || 'scaleToFill'" class="image" />
   </view>
 </template>
 <script lang="ts" setup>
-import { isCircle, Px, ImageMode, shape, funcForIn } from "sview-ui";
-import { computed, CSSProperties, reactive, watch } from "vue";
+import { isCircle, Px } from "sview-ui";
+import { ImageMode, shape } from "sview-ui/typings/components";
+import { computed, CSSProperties } from "vue";
 
 interface Props {
   /** 头像路径，如加载失败，将会显示默认头像 */

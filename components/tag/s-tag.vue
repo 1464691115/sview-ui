@@ -7,7 +7,8 @@
 </template>
 <script lang="ts" setup>
 import { computed, CSSProperties } from "vue";
-import { Px, shape } from "sview-ui";
+import { Px } from "sview-ui";
+import { shape } from "sview-ui/typings/components";
 interface Props {
   /** 不可用 */
   disabled?: string;
