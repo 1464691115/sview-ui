@@ -46,6 +46,7 @@ const buttonStyle = computed<CSSProperties>(() => ({
       ? (buttonProps.customStyle && buttonProps.customStyle.height) || `80px`
       : "6px",
   opacity: buttonProps.disabled === true ? 0.4 : 1,
+  cursor: buttonProps.disabled === true ? "not-allowed" : "pointer",
   ...(buttonProps.customStyle || {}),
 }));
 </script>

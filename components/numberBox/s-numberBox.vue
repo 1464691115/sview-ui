@@ -33,15 +33,16 @@ const emits = defineEmits<{
 
 const inputVal = ref()
 
-const numberBoxStyle = computed<CSSProperties>(() => ({
-	...(props.customerStyle || {})
-}));
 
 const defP = reactive({
 	min: props.min || 1,
 	max: props.max || 99999,
 })
 
+
+const numberBoxStyle = computed<CSSProperties>(() => ({
+	...(props.customerStyle || {})
+}));
 
 watch(() => props.value, val => inputVal.value = val, { immediate: true })
 
@@ -101,6 +102,11 @@ function handleChange(e) {
 
 	.icon-minus {
 		color: $primary;
+	}
+
+	.icon-minus,
+	.icon-plus{
+		cursor: pointer;
 	}
 }
 </style>

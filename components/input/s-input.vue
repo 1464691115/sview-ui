@@ -222,10 +222,16 @@ function handlePrefixIconClick(e) {
   }
 
   &.is-disabled {
+    cursor: not-allowed;
     .s-input_inner {
       background-color: #f5f7fa;
       border-color: #e4e7ed;
       color: #c0c4cc;
+      cursor: not-allowed;
+
+      input {
+        cursor: not-allowed;
+      }
     }
   }
 

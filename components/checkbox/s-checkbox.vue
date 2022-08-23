@@ -82,6 +82,7 @@ function handleTapCheck() {
 
 .s-checkbox-disable {
   color: rgb(200, 201, 204);
+  cursor: not-allowed;
 }
 
 .s-checkbox-right {
