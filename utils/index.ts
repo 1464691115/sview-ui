@@ -122,3 +122,8 @@ export function funcForIn(send, receiver) {
         }
     }
 }
+
+/** 生成数组 */
+export function createArray<V>(len = 0, val: V) {
+    return Array.from({ length: len }, () => val)
+}
