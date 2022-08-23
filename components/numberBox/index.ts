@@ -1,9 +1,9 @@
 import { withInstall } from '../typings'
-import Numberbox from './s-numberbox.vue'
+import Numberbox from './s-numberBox.vue'
 
 export const SNumberbox = withInstall(Numberbox)
 export default SNumberbox
 
-export * from './s-numberbox.vue'
+export * from './s-numberBox.vue'
 
 
