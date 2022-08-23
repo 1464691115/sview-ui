@@ -7,24 +7,6 @@ export type SFCInstallWithContext<T> = SFCWithInstall<T> & {
     _context: AppContext | null
 }
 
-export type ImageMode =
-    | "scaleToFill"
-    | "aspectFit"
-    | "aspectFill"
-    | "widthFix"
-    | "heightFix"
-    | "top"
-    | "bottom"
-    | "center"
-    | "left"
-    | "right"
-    | "top left"
-    | "top right"
-    | "bottom left"
-    | "bottom right"
-
-export type shape = "circle" | "square";
-
 export function withInstall<T>(main: T): SFCWithInstall<T>
 export function withInstall<T, E extends Record<string, any>>(main: T, extra?: E): SFCWithInstall<T> & E
 export function withInstall(main, extra?) {

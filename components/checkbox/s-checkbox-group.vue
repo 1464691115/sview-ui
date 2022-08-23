@@ -11,7 +11,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { shape } from "../typings";
+import type { shape } from "sview-ui";
 import { computed, CSSProperties, ref, watch } from "vue";
 import SCheckbox from "./s-checkbox.vue";
 

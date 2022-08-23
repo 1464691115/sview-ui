@@ -8,7 +8,8 @@
 <script lang="ts" setup>
 import { computed, CSSProperties } from "vue";
 import { Px } from "sview-ui";
-import { shape } from "../typings";
+import type { shape } from "sview-ui";
+
 interface Props {
   /** 不可用 */
   disabled?: string;

@@ -19,7 +19,7 @@
 </template>
 <script lang="ts" setup>
 import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
-import { shape } from "../typings";
+import type { shape } from "sview-ui";
 import { computed, CSSProperties } from "vue";
 
 interface Props {

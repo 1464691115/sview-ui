@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { computed, CSSProperties } from "vue";
 import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
-import { shape } from "../typings";
+import type { shape } from "sview-ui";
 
 interface Props {
   /** 显示文字 */

@@ -6,7 +6,7 @@
 <script lang="ts" setup>
 import { isCircle, Px } from "sview-ui";
 import { computed, CSSProperties } from "vue";
-import { shape, ImageMode } from "../typings";
+import type { shape, ImageMode } from "sview-ui";
 
 interface Props {
   /** 头像路径，如加载失败，将会显示默认头像 */
