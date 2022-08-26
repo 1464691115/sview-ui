@@ -41,13 +41,13 @@ const checkboxProps = useComponentsProps(props);
 
 const checkboxStyle = computed<CSSProperties>(() => ({}));
 const checkboxConStyle = computed<CSSProperties>(() => ({
-  borderRadius: checkboxProps.shape != "square" ? `51%` : "3px",
-  ...(checkboxProps.customStyle || {}),
+  borderRadius: checkboxProps.value.shape != "square" ? `51%` : "3px",
+  ...(checkboxProps.value.customStyle || {}),
 }));
-const checkVal = computed(() => checkboxProps.modelValue);
+const checkVal = computed(() => checkboxProps.value.modelValue);
 
 function handleTapCheck() {
-  emits("change", { [checkboxProps.name]: !checkVal.value });
+  emits("change", { [checkboxProps.value.name]: !checkVal.value });
   emits("update:modelValue", !checkVal.value);
 }
 </script>

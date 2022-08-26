@@ -42,12 +42,12 @@ const buttonProps = useComponentsProps(props);
 
 const buttonStyle = computed<CSSProperties>(() => ({
   borderRadius:
-    buttonProps.shape != "square"
-      ? (buttonProps.customStyle && buttonProps.customStyle.height) || `80px`
-      : "6px",
-  opacity: buttonProps.disabled === true ? 0.4 : 1,
-  cursor: buttonProps.disabled === true ? "not-allowed" : "pointer",
-  ...(buttonProps.customStyle || {}),
+    buttonProps.value.shape != "square"
+      ? (buttonProps.value.customStyle && buttonProps.value.customStyle.height) || `80px`
+      : "none",
+  opacity: buttonProps.value.disabled === true ? 0.4 : 1,
+  cursor: buttonProps.value.disabled === true ? "not-allowed" : "pointer",
+  ...(buttonProps.value.customStyle || {}),
 }));
 </script>
 <style lang="scss" scoped>
@@ -55,6 +55,7 @@ const buttonStyle = computed<CSSProperties>(() => ({
   width: 100%;
   height: 80rpx;
   border: 1px solid transparent;
+  border-radius: 4px;
   font-size: 40rpx;
   display: flex;
   align-items: center;

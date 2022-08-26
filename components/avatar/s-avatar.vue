@@ -23,7 +23,7 @@ interface Props {
   randomBgColor?: boolean;
   customeStyle?: CSSProperties;
   /** 兼容小程序的 v-bind 用法 */
-  customProps?: Exclude<Props, "customProps">;
+  customProps?: Omit<Props, "customProps">;
 }
 const props = defineProps<Props>();
 

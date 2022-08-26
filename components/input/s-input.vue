@@ -138,20 +138,20 @@ const isFocus = ref(false);
 const inputProps = useComponentsProps(props);
 
 /** 禁用 */
-const inputDisabledClass = computed(() => inputProps.disabled === true);
+const inputDisabledClass = computed(() => inputProps.value.disabled === true);
 /** 是否使用左侧图标类（suffix */
-const inputPrefixClass = computed(() => !!inputProps.iconPrefix || !!slots.prefix);
+const inputPrefixClass = computed(() => !!inputProps.value.iconPrefix || !!slots.prefix);
 /** 是否使用右侧图标类（suffix */
 const inputSuffixClass = computed(
   () =>
-    !!inputProps.iconSuffix ||
-    (inputProps.clearable && props.modelValue!?.toString().length > 0) ||
+    !!inputProps.value.iconSuffix ||
+    (inputProps.value.clearable && props.modelValue!?.toString().length > 0) ||
     !!slots.suffix
 );
 /** input左上下边框圆角是否为0 */
-const borderPrependClass = computed(() => slots.prepend || inputProps.textPrepend);
+const borderPrependClass = computed(() => slots.prepend || inputProps.value.textPrepend);
 /** input右上下边框圆角是否为0 */
-const borderAppendClass = computed(() => slots.append || inputProps.textAppend);
+const borderAppendClass = computed(() => slots.append || inputProps.value.textAppend);
 
 function hanldeInput(e) {
   const event = e?.detail?.value || e?.target?.value;
@@ -166,13 +166,13 @@ function hanldeConfirm() {
 
 function handleSuffixIconClick(e) {
   /** 如果有后置图标 */
-  if (inputProps.iconSuffix) emits("clickSuffix", e);
-  else if (inputProps.clearable) emits("update:modelValue", "");
+  if (inputProps.value.iconSuffix) emits("clickSuffix", e);
+  else if (inputProps.value.clearable) emits("update:modelValue", "");
 }
 
 function handlePrefixIconClick(e) {
   /** 如果有前置图标 */
-  if (inputProps.iconSuffix) emits("clickPrefix", e);
+  if (inputProps.value.iconSuffix) emits("clickPrefix", e);
 }
 </script>
 <style lang="scss" scoped>
@@ -228,10 +228,10 @@ function handlePrefixIconClick(e) {
       border-color: #e4e7ed;
       color: #c0c4cc;
       cursor: not-allowed;
+    }
 
-      input {
-        cursor: not-allowed;
-      }
+    ::v-deep .uni-input-input:disabled {
+      cursor: not-allowed;
     }
   }
 
