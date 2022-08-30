@@ -40,6 +40,7 @@
       <input
         class="s-input_inner"
         :value="props.modelValue"
+        :password="inputProps.password"
         :placeholder="inputProps.placeholder || ''"
         :disabled="inputDisabledClass"
         :maxlength="inputProps.maxlength || -1"
@@ -87,6 +88,8 @@ interface Props {
   placeholder?: string;
   /** 是否禁用 默认为false */
   disabled?: boolean;
+  /** 是否密码类型 */
+  password?: boolean;
   /** 是否显示清空按钮 默认为false */
   clearable?: boolean;
   /** 前置图标 */
