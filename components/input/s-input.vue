@@ -213,6 +213,7 @@ function handlePrefixIconClick(e) {
     box-sizing: border-box;
     outline: none;
     font-size: 14px;
+    transition: background 0.2s;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -263,6 +264,7 @@ function handlePrefixIconClick(e) {
 
   .suffix_group {
     right: 0;
+    cursor: pointer;
   }
 
   .s-input_group-prepend,
@@ -278,6 +280,7 @@ function handlePrefixIconClick(e) {
     box-sizing: border-box;
     line-height: calc($INPUTHEIGHT - 2px);
     text-align: center;
+    cursor: pointer;
   }
 
   .s-input_border-prepend {

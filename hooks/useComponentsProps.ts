@@ -2,11 +2,9 @@ import { ref, watch } from "vue";
 import { deepClone } from 'sview-ui';
 
 export function useComponentsProps<P extends Record<string, any>>(props: P) {
-    const resultProps = ref({} as Mutable<P>)
+    const resultProps = ref<Mutable<P>>({} as any)
 
     watch(() => props, () => {
-        console.log(props);
-
         const selfProps = deepClone(props)
         const val = selfProps.customProps || {}
         for (const key in val) {
@@ -19,7 +17,6 @@ export function useComponentsProps<P extends Record<string, any>>(props: P) {
             }
         }
 
-        console.log(selfProps);
         resultProps.value = selfProps
     }, { deep: true, immediate: true })
 

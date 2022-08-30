@@ -11,7 +11,8 @@
   </Transition>
 </template>
 <script lang="ts" setup>
-import { computed, CSSProperties } from "vue";
+import { computed, CSSProperties, onUnmounted, watch } from "vue";
+
 interface Props {
   modelValue?: boolean;
   zIndex?: number;
@@ -30,10 +31,31 @@ const overlayStyle = computed<CSSProperties>(() => ({
   transitionDuration: (props.duration || 300) + "ms",
 }));
 
+watch(
+  () => props.modelValue,
+  (val) => {
+    let m = function (e) {
+      e.preventDefault();
+    };
+    if (val) {
+      //停止页面滚动
+      document.body.style.overflow = "hidden";
+      document.addEventListener("touchmove", m, { passive: false }); //禁止页面滑动
+    } else {
+      document.body.style.overflow = ""; //出现滚动条
+      document.removeEventListener("touchmove", m, { passive: true } as any);
+    }
+  }
+);
+
 function handleTapOverlay(e) {
   emits("update:modelValue", !props.modelValue);
   emits("click", e);
 }
+
+onUnmounted(() => {
+  document.body.style.overflow = ""; //出现滚动条
+});
 </script>
 <style lang="scss" scoped>
 .s-overlay {
@@ -46,7 +68,6 @@ function handleTapOverlay(e) {
 </style>
 
 <style>
-
 .v-enter-from,
 .v-leave-to {
   opacity: 0;

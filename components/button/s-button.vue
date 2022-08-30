@@ -8,7 +8,9 @@
     ]"
     :style="buttonStyle"
   >
-    {{ buttonProps.title || buttonProps.text || "" }}
+    <slot>
+      {{ buttonProps.title || buttonProps.text || "" }}
+    </slot>
   </view>
 </template>
 <script lang="ts" setup>
@@ -56,7 +58,7 @@ const buttonStyle = computed<CSSProperties>(() => ({
   height: 80rpx;
   border: 1px solid transparent;
   border-radius: 4px;
-  font-size: 40rpx;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
