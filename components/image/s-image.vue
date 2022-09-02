@@ -38,7 +38,7 @@ const emits = defineEmits<{
   (e: "error", img: tinyapp.IBaseEvent): void;
 }>();
 
-const url = computed(() => props.src.indexOf('@/') == 0 ? props.src.split('@')[1] : props.src)
+const url = computed(() => props.src?.indexOf('@/') == 0 ? props.src.split('@')[1] : props.src)
 
 function handleTapImg() {
   if (props.isPreview === true) {
