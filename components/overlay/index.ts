@@ -1,7 +1,6 @@
-import { withInstall } from '../typings'
 import Overlay from './s-overlay.vue'
 
-export const SOverlay = withInstall(Overlay)
+export const SOverlay = Overlay
 export default SOverlay
 
 export * from './s-overlay.vue'

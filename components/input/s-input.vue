@@ -1,77 +1,45 @@
 <template>
-  <view
-    class="s-input"
-    :class="{
-      'is-disabled': inputDisabledClass,
-      's-input-suffix': inputSuffixClass,
-      's-input-prefix': inputPrefixClass,
-    }"
-  >
-    <view
-      v-if="inputProps.textPrepend || slots.prepend"
-      class="s-input_group-prepend s-input_border-append"
-      @click.stop="(e) => emits('clickPrepend', e)"
-    >
+  <view class="s-input" :class="{
+    'is-disabled': inputDisabledClass,
+    's-input-suffix': inputSuffixClass,
+    's-input-prefix': inputPrefixClass,
+  }">
+    <view v-if="inputProps.textPrepend || slots.prepend" class="s-input_group-prepend s-input_border-append"
+      @click.stop="(e) => emits('clickPrepend', e)">
       <slot name="prepend">
         {{ inputProps.textPrepend || "" }}
       </slot>
     </view>
 
-    <view
-      class="s-input_group-content"
-      :class="{
-        's-input_inner-focus': isFocus,
-        's-input_inner-border-none': inputProps.inputBorder === false,
-        's-input_border-prepend': borderPrependClass,
-        's-input_border-append': borderAppendClass,
-      }"
-    >
+    <view class="s-input_group-content" :class="{
+      's-input_inner-focus': isFocus,
+      's-input_inner-border-none': inputProps.inputBorder === false,
+      's-input_border-prepend': borderPrependClass,
+      's-input_border-append': borderAppendClass,
+    }">
       <view v-if="slots.prefix || inputProps.iconPrefix" class="prefix_group">
         <slot name="prefix">
-          <s-icon
-            :icon="inputProps.iconPrefix || 'search'"
-            size="26px"
-            color="#999"
-            @tap.stop="handlePrefixIconClick"
-          />
+          <s-icon :icon="inputProps.iconPrefix || 'search'" size="26px" color="#999"
+            @tap.stop="handlePrefixIconClick" />
         </slot>
       </view>
 
-      <input
-        class="s-input_inner"
-        :value="props.modelValue"
-        :password="inputProps.password"
-        :placeholder="inputProps.placeholder || ''"
-        :disabled="inputDisabledClass"
-        :maxlength="inputProps.maxlength || -1"
-        :minlength="inputProps.minlength || 0"
-        :autocomplete="inputProps.autocomplete || 'on'"
-        :name="inputProps.name || ''"
-        :readonly="inputProps.readonly || false"
-        :autofocus="inputProps.autofocus || false"
-        @focus="isFocus = true"
-        @blur="isFocus = false"
-        @input="hanldeInput"
-        @confirm="hanldeConfirm"
-      />
+      <input class="s-input_inner" :value="props.modelValue" :password="inputProps.password"
+        :placeholder="inputProps.placeholder || ''" :disabled="inputDisabledClass"
+        :maxlength="inputProps.maxlength || -1" :minlength="inputProps.minlength || 0"
+        :autocomplete="inputProps.autocomplete || 'on'" :name="inputProps.name || ''"
+        :readonly="inputProps.readonly || false" :autofocus="inputProps.autofocus || false" @focus="isFocus = true"
+        @blur="isFocus = false" @input="handleInput" @confirm="handleConfirm" />
 
       <view v-if="inputSuffixClass" class="suffix_group">
         <slot name="suffix">
-          <s-icon
-            :icon="inputProps.iconSuffix || 'close'"
-            size="26px"
-            color="#999"
-            @tap.stop="handleSuffixIconClick"
-          />
+          <s-icon :icon="inputProps.iconSuffix || 'close'" size="26px" color="#999" @tap.stop="handleSuffixIconClick" />
         </slot>
       </view>
     </view>
 
-    <view
-      v-if="inputProps.textAppend || slots.append"
-      class="s-input_group-append s-input_border-prepend"
-      @click.stop="(e) => emits('clickAppend', e)"
-    >
+    <view v-if="inputProps.textAppend || slots.append" class="s-input_group-append s-input_border-prepend"
+      @click.stop="(e) => emits('clickAppend', e)">
       <slot name="append">
         {{ inputProps.textAppend || "" }}
       </slot>
@@ -80,58 +48,22 @@
 </template>
 <script lang="ts" setup>
 import { useComponentsProps } from "sview-ui/hooks/useComponentsProps";
-import { computed, ref, useSlots } from "vue";
-import { ICON_KEY } from "../icon/enums";
+import { computed, PropType, ref, useSlots } from "vue";
+import { baseSInputProps, BaseSInputProps } from "./props";
 
-interface Props {
-  /** 占位符 */
-  placeholder?: string;
-  /** 是否禁用 默认为false */
-  disabled?: boolean;
-  /** 是否密码类型 */
-  password?: boolean;
-  /** 是否显示清空按钮 默认为false */
-  clearable?: boolean;
-  /** 前置图标 */
-  iconPrefix?: keyof typeof ICON_KEY;
-  /** 后置图标 */
-  iconSuffix?: keyof typeof ICON_KEY;
-  /** 前置内容(可配置插槽) */
-  textPrepend?: string;
-  /** 后置内容(可配置插槽) */
-  textAppend?: string;
-  /** 绑定的值 */
-  modelValue?: string | number;
-  /** 是否显示边框，默认显示 */
-  inputBorder?: boolean;
-
-  //TODO 原生属性
-  maxlength?: number;
-  minlength?: number;
-  autocomplete?: "on" | "off";
-  name?: string;
-  readonly?: boolean;
-  autofocus?: boolean;
-
-  /** 兼容小程序的 v-bind 用法 不能添加 存在 双向绑定的 props(不能加emits里update的) */
-  customProps?: Omit<Props, "customProps">;
-}
-const props = withDefaults(defineProps<Props>(), {
-  inputBorder: undefined,
-  clearable: undefined,
-  disabled: undefined,
-  readonly: undefined,
-  autofocus: undefined,
-});
+const props = defineProps({
+  ...baseSInputProps,
+  customProps: Object as PropType<Omit<BaseSInputProps, "customProps">>
+})
 
 const emits = defineEmits<{
   (e: "change", val: Event);
-  (e: "confirm", val: Props["modelValue"]);
+  (e: "confirm", val: BaseSInputProps["modelValue"]);
   (e: "clickSuffix", val: Event);
   (e: "clickPrefix", val: Event);
   (e: "clickPrepend", val: Event);
   (e: "clickAppend", val: Event);
-  (e: "update:modelValue", val: Props["modelValue"]);
+  (e: "update:modelValue", val: BaseSInputProps["modelValue"]);
 }>();
 const slots = useSlots();
 
@@ -156,13 +88,13 @@ const borderPrependClass = computed(() => slots.prepend || inputProps.value.text
 /** input右上下边框圆角是否为0 */
 const borderAppendClass = computed(() => slots.append || inputProps.value.textAppend);
 
-function hanldeInput(e) {
+function handleInput(e) {
   const event = e?.detail?.value || e?.target?.value;
   emits("change", e);
   emits("update:modelValue", event);
 }
 
-function hanldeConfirm() {
+function handleConfirm() {
   const event = props.modelValue || "";
   emits("confirm", event);
 }
@@ -227,6 +159,7 @@ function handlePrefixIconClick(e) {
 
   &.is-disabled {
     cursor: not-allowed;
+
     .s-input_inner {
       background-color: #f5f7fa;
       border-color: #e4e7ed;
